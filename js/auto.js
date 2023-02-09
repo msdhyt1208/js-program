@@ -1,6 +1,7 @@
 // gaibu.input();
 $(".numbar-colmun").on("click",function(){
-  numbar = $(this).text();
+  if(!isNaN($(this).text())) numbar = $(this).text();
+  else numbar ="";
   $(".select").text(numbar);
 })
 $("#button-cheak").on("click",function(){
@@ -8,6 +9,7 @@ $("#button-cheak").on("click",function(){
 })
 $("#button-start").on("click",function(){
   gaibu.input();
+  display.start();
 })
 $("#button-auto").on("click",function(){
   // gaibu.input();
@@ -15,19 +17,22 @@ $("#button-auto").on("click",function(){
   auto();
 })
 $("li").on("click",function(){
-  id = Number($(this).attr("id"));
+  const selectPush = $(this).hasClass("select");
+  const id = $(this).attr("id");
+  const r=chengeId.row(id);
+  const c=chengeId.colmun(id);
   $(".select").removeClass();
+  if(display.startNamber [c][r] != 0) return;
+  if(selectPush) return;
   $(this).addClass("select");
+  
 })
 $(window).keyup(function(e){
-  const key = e.key;
+  let key = e.key;
   const id = $(".select").attr("id");
-  if($.isNumeric(key)){
-    if(key<10){
-      $(".select").text(key);
-      display.input(id,key);
-    }
-  }
+  if(!($.isNumeric(key))||key<1) key = ""; 
+  $(".select").text(key);
+  display.input(id,key);
   $(".select").removeClass();
 });
 async  function auto(){
