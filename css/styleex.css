@@ -211,7 +211,7 @@ display: none;
 
   body{
     background-color: #121212;
-    padding-top: 30%;
+    padding-top: 0;
     flex-direction: column;
   }
 
