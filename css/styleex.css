@@ -210,7 +210,7 @@ display: none;
 @media screen and (max-width:500px ){
 
   body{
-    background-color: #121212;
+    background-color: #121213;
     padding-top: 0;
     flex-direction: column;
   }
