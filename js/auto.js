@@ -14,6 +14,7 @@ $("#button-start").on("click",function(){
 $("#button-auto").on("click",function(){
   // gaibu.input();
   display.start();
+  // juhggyhiuikh
   auto();
 })
 $("li").on("click",function(){
