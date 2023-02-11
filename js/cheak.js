@@ -78,7 +78,7 @@ const cheak={
     for(let i=1;i<10;i++){
       if(!this.oneCellAll(i,i,i)) return false;
     }
-  return true;
+    return true;
   },
 
   row:function(r,zero){       //rowの確認
@@ -172,8 +172,5 @@ const chengeId ={
     return  Math.floor((r-1)/3)+
             Math.floor((c-1)/3)*3+
             1;
-  },
-  
-
-
+  }
 }
