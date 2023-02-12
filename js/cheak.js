@@ -144,7 +144,6 @@ const cheak={
   },
   pattern:function(){
     ptn = 0;
-    end = false;
     position = 0;
     display.reset();
     while(ptn<10){
