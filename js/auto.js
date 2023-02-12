@@ -1,3 +1,5 @@
+ptn = 0;
+end =false;
 // gaibu.input();
 $(".numbar-colmun").on("click",function(){
   if(!isNaN($(this).text())) numbar = $(this).text();
@@ -12,12 +14,15 @@ $("#button-start").on("click",function(){
   display.start();
 })
 $("#button-auto").on("click",function(){
-  if(!cheak.gemeClear()){
-    display.start();
-    auto();
-  }
-  
+  position = 0;
+  if(!cheak.gemeClear())  display.start();
+  else  position=display.possible.id.length-1;
+  auto(position);
 })
+$("#button-ptn").on("click",function(){
+  cheak.pattern();
+})
+
 $("li").on("click",function(){
   const cell = $(this).attr("id");
   const r = chengeId.row(cell);
@@ -30,29 +35,55 @@ $("li").on("click",function(){
   display.line(r,c,chengeId.block(cell));     //横縦ブロックのライン変更
 })
 $(window).keyup(function(e){
-  const key = e.key;
+  let key = e.key;
   const cell = $(".select").attr("id");
   if(!($.isNumeric(key))||key<1) key = ""; 
   $(".select").text(key);
   display.input(cell,key);
   $(".select").removeClass();
   $(".selectLine").removeClass();
+  // cheak.pattern();
 });
-async function auto(){
-  let i = 0;
+async function auto(cellPozition){
+  let i = cellPozition;
+
   while(display.possible.id.length > i){
     cell = display.possible.id[i];
     r    = chengeId.row(cell);
     c    = chengeId.colmun(cell);
     b    = chengeId.block(cell);
+
     while(display.bord[c][r] < 10){
       display.bord[c][r] ++;
       if(cheak.oneCellAll(r,c,b,true)) break;
     }
     (display.bord[c][r] >= 10) ? i--:i++;
     if(display.bord[c][r] >= 10)  display.bord[c][r] = "";
+    
     $("#"+cell).text(display.bord[c][r]);
-
+    console.log(i);
+    if(i<0)return false;
     const result = await resolveAfterSeconds(0.01);
   }
+}
+function autoNotDisplay(cellPozition){
+  let i = cellPozition;
+
+  while(display.possible.id.length > i){
+    cell = display.possible.id[i];
+    r    = chengeId.row(cell);
+    c    = chengeId.colmun(cell);
+    b    = chengeId.block(cell);
+
+    while(display.bord[c][r] < 10){
+      // console.log(`${i}:${cell}:${r}:${c}:${b}`);
+      display.bord[c][r] ++;
+      if(cheak.oneCellAll(r,c,b,true)) break;
+    }
+    (display.bord[c][r] >= 10) ? i--:i++;
+    if(display.bord[c][r] >= 10)  display.bord[c][r] = "";
+
+    if(i<0)return false;
+  }
+  return true;
 }

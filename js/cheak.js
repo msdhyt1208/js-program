@@ -71,6 +71,17 @@ const display={
       if(i!=(c-stC-1)*3+r-stR)
                    $("#"+(mvR+stR+(mvC+stC)*10)).addClass("selectLine");
     }
+  },
+  reset:function(){
+    for(let cell=0 ;cell<100;cell++){
+      r = chengeId.row(cell);
+      c = chengeId.colmun(cell)
+      display.startNamber[c][r] = "";
+      display.bord[c][r] = "";
+    }
+    display.possible.id = new Array(0);
+    console.log(display.possible.id+":"+display.possible.id.length);
+
   }
 }
 const cheak={
@@ -131,6 +142,24 @@ const cheak={
     }
     return true;
   },
+  pattern:function(){
+    ptn = 0;
+    end = false;
+    position = 0;
+    display.reset();
+    while(ptn<10){
+      if(!cheak.gemeClear())  display.start();
+      else  position=display.possible.id.length-1;
+      if(end)return;
+      if(!autoNotDisplay(position)) {
+        end = true;
+        return;
+      }
+      $("#button-ptn").text("思考中");
+      ptn ++;
+      setTimeout(function(){$("#button-ptn").text(ptn)},1000)
+    }
+  }
 
 }
 const gaibu={
