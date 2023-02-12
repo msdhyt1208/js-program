@@ -20,9 +20,12 @@ $("li").on("click",function(){
   const cell = $(this).attr("id");
   const r = chengeId.row(cell);
   const c = chengeId.colmun(cell);
+  if(display.startNamber [c][r] != 0) {
+    $(".select").removeClass();
+    return;
+  }
   $(".select").removeClass();
-  if(display.startNamber [c][r] != 0) return;
-  $(this).addClass("select");
+  $(this).toggleClass("select");
   
 })
 $(window).keyup(function(e){
