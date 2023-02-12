@@ -108,6 +108,7 @@ main .cross{
   }
   header{
     width:30%;
+    height: 30%;
     flex-direction: column;
     margin: 10% auto 50%;
   }
