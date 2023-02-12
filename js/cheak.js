@@ -157,8 +157,8 @@ const cheak={
       }
       $("#button-ptn").text("思考中");
       ptn ++;
-      setTimeout(function(){$("#button-ptn").text(ptn)},1000)
     }
+    setTimeout(function(){$("#button-ptn").text(ptn)},1000);
   }
 
 }
