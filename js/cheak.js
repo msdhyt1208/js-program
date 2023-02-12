@@ -24,10 +24,7 @@ const display={
     ["0","0","0","0","0","0","0","0","0","0"]
   ],
   possible:{
-    id:[81],
-    row:[81],
-    colmun:[81],
-    block:[81]
+    id:[81]
   },
   streat:                       //一列の配列
     ["0","0","0","0","0","0","0","0","0","0"
@@ -38,15 +35,12 @@ const display={
     for(let id=11;id<100;id++){
       if(id%10==0) continue;
       key = $("#"+id).text();
-      r=chengeId.row(id);
-      c=chengeId.colmun(id);
+      r = chengeId.row(id);
+      c = chengeId.colmun(id);
       this.bord [c][r] = key;
       this.startNamber [c][r] = key;
       if(key != 0) continue;
         this.possible.id[n] = id;
-        this.possible.colmun[n] = c;
-        this.possible.row[n] = r;
-        this.possible.block[n] = chengeId.block(id);
         n++;
     }
   },
@@ -64,7 +58,7 @@ const display={
       if(cheak.block(i))  $("#block"+i).addClass("ok");
 
     }
-    // if(cheak.gemeClear()){  $("main").addClass("end")}
+    if(cheak.gemeClear()){  $("main").addClass("end")}
   }
 }
 const cheak={

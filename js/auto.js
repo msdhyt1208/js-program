@@ -17,46 +17,38 @@ $("#button-auto").on("click",function(){
   auto();
 })
 $("li").on("click",function(){
-  const selectPush = $(this).hasClass("select");
-  const id = $(this).attr("id");
-  const r=chengeId.row(id);
-  const c=chengeId.colmun(id);
+  const cell = $(this).attr("id");
+  const r = chengeId.row(cell);
+  const c = chengeId.colmun(cell);
   $(".select").removeClass();
   if(display.startNamber [c][r] != 0) return;
-  if(selectPush) return;
+  if($(this).hasClass("select")) return;
   $(this).addClass("select");
   
 })
 $(window).keyup(function(e){
   let key = e.key;
-  const id = $(".select").attr("id");
+  const cell = $(".select").attr("id");
   if(!($.isNumeric(key))||key<1) key = ""; 
   $(".select").text(key);
-  display.input(id,key);
+  display.input(cell,key);
   $(".select").removeClass();
 });
-async  function auto(){
+async function auto(){
   let i = 0;
-  while(display.possible.id.length>i){
-    id =  display.possible.id[i];
-    r =   display.possible.row[i];
-    c =   display.possible.colmun[i];
-    b =   display.possible.block[i];
-    while(true){
+  while(display.possible.id.length > i){
+    cell =  display.possible.id[i];
+    r =   chengeId.row(cell);
+    c =   chengeId.colmun(cell);
+    b =   chengeId.block(cell);
+    while(display.bord[c][r] < 10){
       display.bord[c][r] ++;
-
-      if(display.bord[c][r] >= 10){
-        display.bord[c][r] = "";
-        i--;
-        break;
-      }
-      if(cheak.oneCellAll(r,c,b,true)){
-        i++;
-        break;
-      }
+      if(cheak.oneCellAll(r,c,b,true)) break;
     }
-    $("#"+id).text("");
-    $("#"+id).text(display.bord[c][r]);
-    const result = await resolveAfter2Seconds(0.01);
+    (display.bord[c][r] >= 10) ? i--:i++;
+    if(display.bord[c][r] >= 10)  display.bord[c][r] = "";
+    $("#"+cell).text(display.bord[c][r]);
+
+    const result = await resolveAfterSeconds(0.01);
   }
 }

@@ -1,4 +1,4 @@
-function resolveAfter2Seconds(sec) {
+function resolveAfterSeconds(sec) {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve('resolved');
