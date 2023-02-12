@@ -59,6 +59,18 @@ const display={
 
     }
     if(cheak.gemeClear()){  $("main").addClass("end")}
+  },
+  line:function(r,c,b){             //重複確認
+    stR = ((b-1)%3)*3;            //ブロックの左端基準
+    stC = Math.floor((b-1)/3)*3;  //ブロックの上端基準
+    for(let i=1;i<10;i++){
+      mvR = (i-1)%3+1;              //ブロック内移動右
+      mvC = Math.floor((i+2)/3);    //ブロック内移動下
+      if(i != c)   $("#"+((i*10)+r)).addClass("selectLine");
+      if(i != r)   $("#"+((c*10)+i)).addClass("selectLine");
+      if(i!=(c-stC-1)*3+r-stR)
+                   $("#"+(mvR+stR+(mvC+stC)*10)).addClass("selectLine");
+    }
   }
 }
 const cheak={
@@ -163,8 +175,8 @@ const chengeId ={
     return Math.floor(id/10);
   },
   block:function(id){
-    return  Math.floor((r-1)/3)+
-            Math.floor((c-1)/3)*3+
+    return  Math.floor((this.row(id)-1)/3)+
+            Math.floor((this.colmun(id)-1)/3)*3+
             1;
   }
 }

@@ -12,37 +12,39 @@ $("#button-start").on("click",function(){
   display.start();
 })
 $("#button-auto").on("click",function(){
-  // gaibu.input();
-  display.start();
-  auto();
+  if(!cheak.gemeClear()){
+    display.start();
+    auto();
+  }
+  
 })
 $("li").on("click",function(){
   const cell = $(this).attr("id");
   const r = chengeId.row(cell);
   const c = chengeId.colmun(cell);
-  if(display.startNamber [c][r] != 0) {
-    $(".select").removeClass();
-    return;
-  }
+  const selectOn = $(this).hasClass("select");
   $(".select").removeClass();
-  $(this).toggleClass("select");
-  
+  $(".selectLine").removeClass();
+  if(selectOn || display.startNamber [c][r] != 0)  return;
+  $(this).addClass("select");
+  display.line(r,c,chengeId.block(cell));     //横縦ブロックのライン変更
 })
 $(window).keyup(function(e){
-  let key = e.key;
+  const key = e.key;
   const cell = $(".select").attr("id");
   if(!($.isNumeric(key))||key<1) key = ""; 
   $(".select").text(key);
   display.input(cell,key);
   $(".select").removeClass();
+  $(".selectLine").removeClass();
 });
 async function auto(){
   let i = 0;
   while(display.possible.id.length > i){
-    cell =  display.possible.id[i];
-    r =   chengeId.row(cell);
-    c =   chengeId.colmun(cell);
-    b =   chengeId.block(cell);
+    cell = display.possible.id[i];
+    r    = chengeId.row(cell);
+    c    = chengeId.colmun(cell);
+    b    = chengeId.block(cell);
     while(display.bord[c][r] < 10){
       display.bord[c][r] ++;
       if(cheak.oneCellAll(r,c,b,true)) break;
