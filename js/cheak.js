@@ -120,16 +120,15 @@ const cheak={
       display.streat[i] = display.bord[c][i];
     }
   },
-  blockOfStreat:function(b){    //block要素を一列の配列に
+  blockOfStreat:function(b){    //block要素を一列の配列
+    stR = ((b-1)%3)*3;            //ブロックの左端基準
+    stC = Math.floor((b-1)/3)*3;  //ブロックの上端基準
     for(let i=1;i<10;i++){
-      stR = ((b-1)%3)*3;            //ブロックの左端基準
-      stC = Math.floor((b-1)/3)*3;  //ブロックの上端基準
       mvR = (i-1)%3+1;              //ブロック内移動右
       mvC = Math.floor((i+2)/3);    //ブロック内移動下
       display.streat[i] = display.bord[stC+mvC][stR+mvR];
     }
   },
-
   streat:function(zero){    
     for(let i=1;i<10;i++){
       for(let j=i+1;j<10;j++){
