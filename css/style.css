@@ -43,6 +43,10 @@ main .colmun ,main ul ,main li {
     
 }
 main ul {
+  display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1px;
   padding: 1%;
 }
 main li {
@@ -52,7 +56,8 @@ main li {
     align-items: center;
   background: radial-gradient(rgb(200,255,255),rgb(100,240,240));
     border-radius: 5%;
-    height: 33%;
+    height: 100%;
+    width: 100%;
   box-shadow: 1px 1px 5px  rgb(45, 115, 115); 
   
 }
