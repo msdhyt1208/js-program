@@ -53,8 +53,8 @@ const display={
       $("#r"+i).removeClass();
       $("#c"+i).removeClass();
       $("#block"+i).removeClass();
-      if(cheak.row(i))    $("#c"+i).addClass("ok");
-      if(cheak.colmun(i)) $("#r"+i).addClass("ok");
+      if(cheak.row(i))    $("#r"+i).addClass("ok");
+      if(cheak.colmun(i)) $("#c"+i).addClass("ok");
       if(cheak.block(i))  $("#block"+i).addClass("ok");
 
     }

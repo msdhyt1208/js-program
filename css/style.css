@@ -1,6 +1,7 @@
+
 body{
   background:linear-gradient(320deg ,rgba(255,200,255,0.8),rgba(255,255,200,0.8));
-
+  height: 100vh;
 }
 header{
   display: flex;
@@ -27,79 +28,127 @@ main{
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    width: 95vw;
-    height: 95vw;
+  width: 95vw;
+  height: 95vw;
   margin: 10vw auto;
 }  
-main .colmun{
-  display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+main .colmun ,main ul ,main li {
+  position: relative;
+  z-index: 5;
+  flex-basis: 33%;
   width: 100%;
-  height: 33%;
-}
-
-main ul {
   display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
-  width: 33%;
-  height: 100%;
+    
+}
+main ul {
+  padding: 1%;
 }
 main li {
-  display: flex;
-    flex-wrap: wrap;
+
+  list-style: none;
     justify-content: center;
     align-items: center;
   background: radial-gradient(rgb(200,255,255),rgb(100,240,240));
     border-radius: 5%;
-    width: 33%;
     height: 33%;
   box-shadow: 1px 1px 5px  rgb(45, 115, 115); 
-  list-style: none;
+  
 }
 .select{
+  z-index: 10;
   scale: 1.2;
   background: radial-gradient(rgb(200,255,255),rgb(100,255,255));
 
 }
 main .cross{
   position: absolute;
+  z-index: 1;
+  display: flex;
+  top: -3%;
+  left: -3%;
+  width: 106%;
+  height: 106%;
+
+}
+main .cross > div{
+  position: absolute;
+  top: 0; bottom: 0;
+  left: 0; right: 0;
+  margin: auto;
+  display: flex;
+    justify-content: space-around;
+}
+  main .cross .colmun {
+    flex-direction: column;
+    height: 95%;
+  }
+  main .cross .row {
+    left: 0; right: 0;
+    width: 95%;
+  }
+main .cross > div >div{
+  display: flex;  
+  justify-content: space-around;
+}
+  main .cross .colmun div{
+    flex-direction: column;
+    height: 32%;
+  }
+  main .cross .row div{
+    width: 32%;
+  }
+main .cross > div>div>span{
+  background-color: #333;
+    height: 100%;
+    width: 100%;
+}
+  main .cross .colmun div span{
+    height: 2px;
+  }
+  main .cross .row div span{
+    width: 2px;
+  }
+main .cross > div > div > .ok{
+  background-color: red;
+
+}
+main >div >.ok {
+  border: solid 2px red;
 }
 
-#numbar{
+
+#numbar,#numbar .numbar-row{
   display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
+    
     justify-content: space-between;
+
+}
+#numbar{
+  flex-direction: column;
   width: 60%;
-  height: 150px;
-  margin: 0 5vw 5vw auto;
+  height: 160px;
+  margin-left: auto;
+  padding: 2%;
 }
 #numbar .numbar-row{
-  display: flex;
-    justify-content: space-between;
-    width: 100%;
-    height: 40%;
+  flex-basis: 45%;
 }
 #numbar .numbar-colmun{
+  flex-basis: 18%;
   display: flex;
     justify-content: center;
     align-items: center;
   background:radial-gradient(rgb(255, 255, 255),rgb(255, 225, 77)) ;
     box-shadow: 1px 1px 5px  rgb(123, 137, 42);   
-    width: 18%;
-    height: 100%;
 }
 
-@media screen and (min-width :500px ) {
+@media screen and (min-width :600px ) {
   body{
     display: flex;
-      flex-wrap: nowrap;
       flex-direction: row-reverse;
-    /* background-color: #333; */
-    height: 100vh;
   }
   main{
     width: 500px;
@@ -110,7 +159,7 @@ main .cross{
     width:30%;
     height: 30%;
     flex-direction: column;
-    margin: 10% auto 50%;
+    margin-top: 10%;
   }
   header button{
     width: 100%;
@@ -118,7 +167,5 @@ main .cross{
   }
   #numbar{
     display: none;
-    bottom: 10%;
-    right: 0;
   }
 }

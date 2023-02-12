@@ -22,7 +22,6 @@ $("li").on("click",function(){
   const c = chengeId.colmun(cell);
   $(".select").removeClass();
   if(display.startNamber [c][r] != 0) return;
-  if($(this).hasClass("select")) return;
   $(this).addClass("select");
   
 })
