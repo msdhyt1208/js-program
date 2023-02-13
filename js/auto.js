@@ -12,7 +12,6 @@ $("#button-cheak").on("click",function(){
   display.check();
 })
 $("#button-start").on("click",function(){
-  gaibu.input();
   display.start();
 })
 $("#button-auto").on("click",function(){
