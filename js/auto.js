@@ -5,6 +5,8 @@ $(".numbar-colmun").on("click",function(){
   if(!isNaN($(this).text())) numbar = $(this).text();
   else numbar ="";
   $(".select").text(numbar);
+  cheak.pattern();
+  display.reset();
 })
 $("#button-cheak").on("click",function(){
   display.check();
@@ -42,7 +44,8 @@ $(window).keyup(function(e){
   display.input(cell,key);
   $(".select").removeClass();
   $(".selectLine").removeClass();
-  // cheak.pattern();
+  cheak.pattern();
+  display.reset();
 });
 async function auto(cellPozition){
   let i = cellPozition;
@@ -68,7 +71,9 @@ async function auto(cellPozition){
 }
 function autoNotDisplay(cellPozition){
   let i = cellPozition;
-
+  for(let i=1;i<10;i++){
+    if(!cheak.oneCellAll(i,i,i,true))  return false;
+  }
   while(display.possible.id.length > i){
     cell = display.possible.id[i];
     r    = chengeId.row(cell);

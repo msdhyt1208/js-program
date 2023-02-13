@@ -1,4 +1,3 @@
-end = false;
 const display={
   bord:[                      //変更中の盤面
       ["0","0","0","0","0","0","0","0","0","0"],
@@ -78,7 +77,7 @@ const display={
       r = chengeId.row(cell);
       c = chengeId.colmun(cell)
       display.startNamber[c][r] = "";
-      display.bord[c][r] = "";
+      // display.bord[c][r] = "";
     }
     display.possible.id = new Array(0);
     console.log(display.possible.id+":"+display.possible.id.length);
@@ -98,7 +97,6 @@ const cheak={
     }
     return true;
   },
-
   row:function(r,zero){       //rowの確認
     this.rowOfStreat(r);
     return this.streat(zero);
@@ -121,7 +119,7 @@ const cheak={
       display.streat[i] = display.bord[c][i];
     }
   },
-  blockOfStreat:function(b){    //block要素を一列の配列
+  blockOfStreat:function(b){    //block要素を一列の配列に
     stR = ((b-1)%3)*3;            //ブロックの左端基準
     stC = Math.floor((b-1)/3)*3;  //ブロックの上端基準
     for(let i=1;i<10;i++){
@@ -130,6 +128,7 @@ const cheak={
       display.streat[i] = display.bord[stC+mvC][stR+mvR];
     }
   },
+
   streat:function(zero){    
     for(let i=1;i<10;i++){
       for(let j=i+1;j<10;j++){
@@ -144,20 +143,22 @@ const cheak={
   },
   pattern:function(){
     ptn = 0;
+    end = false;
     position = 0;
     display.reset();
+    display.start();
     while(ptn<10){
-      if(!cheak.gemeClear())  display.start();
-      else  position=display.possible.id.length-1;
+      if(cheak.gemeClear())   position=display.possible.id.length-1;
       if(end)return;
       if(!autoNotDisplay(position)) {
         end = true;
+        setTimeout(function(){$("#button-ptn").text(ptn)},1000)
         return;
       }
       $("#button-ptn").text("思考中");
       ptn ++;
+      setTimeout(function(){$("#button-ptn").text(ptn)},1000)
     }
-    setTimeout(function(){$("#button-ptn").text(ptn)},1000);
   }
 
 }
