@@ -48,11 +48,11 @@ js=function(){
   purotLi = document.querySelectorAll("li");
   
   for(let i =0;i<inputNumbarBox.length;i++){
-    inputNumbarBox[i].addEventListener("dragstart",addEvent.dragstart());
+    inputNumbarBox[i].addEventListener("touchstart",addEvent.dragstart());
   }
   for(let i =0;i<purotLi.length;i++){
-    purotLi[i].addEventListener("dragover",addEvent.dragover());
-    purotLi[i].addEventListener("drop",addEvent.drop())
+    purotLi[i].addEventListener("touchmove",addEvent.dragover());
+    purotLi[i].addEventListener("touchend",addEvent.drop())
   }
 }
 js();
