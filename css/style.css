@@ -11,7 +11,7 @@ header{
 
 }
 header button{
-  margin: 10px;
+  margin: 10px 0;
   width: 20%;
   height: 10vh;
   background:  radial-gradient(rgb(240, 240, 240),rgb(128,128,128));
