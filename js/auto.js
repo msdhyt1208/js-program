@@ -21,6 +21,8 @@ jsTouch=function(){
   inputNumbarBox = document.querySelectorAll("#numbar>div>div");
   purotLi = document.querySelectorAll("li");
   moveMain = document.querySelector("main");
+  pageX = 0;
+  pageY = 0;
   moveMain.addEventListener("touchstart",function(event){
     input = false;
     hand = event.target.textContent;
@@ -36,20 +38,23 @@ jsTouch=function(){
   })
   moveMain.addEventListener("touchend",function(event){
     event.preventDefault();
-    if(!input||display.startNamber [c][r] != 0)  return;
     table  = document.elementFromPoint(pageX,pageY);
-
     id = table.id;
     r = chengeId.row(id);
     c = chengeId.colmun(id);
+    console.dir(table)
+    div = table.children[0].outerHTML;
+    if(!input||display.startNamber [c][r] != 0)  return;
     
+
     
     for(i=0;i<purotLi.length;i++){
       if(table === purotLi[i]){
         display.bord[c][r] = Number(hand);
-        table.innerHTML = `${hand}${table.innerHTML}`;
+        table.innerHTML = `${hand}${div}`;
       }
     }
+    cheak.pattern();
   })
 
 }
