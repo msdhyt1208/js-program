@@ -160,7 +160,6 @@ main >div >.ok {
   position: absolute;
   bottom: -70%;
   right: 10px;
-  flex-direction: column;
   width: 60%;
   height: 160px;
   margin-left: auto;
