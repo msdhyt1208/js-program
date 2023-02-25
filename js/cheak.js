@@ -1,54 +1,55 @@
 
 ptn = 0;
 end =false;
-const display={
+let display={
   bord:[                      //変更中の盤面
-  ["0","0","0","0","0","0","0","0","0","0"],
-  ["0","0","0","0","0","0","0","0","0","0"],
-  ["0","0","0","0","0","0","0","0","0","0"],
-  ["0","0","0","0","0","0","0","0","0","0"],
-  ["0","0","0","0","0","0","0","0","0","0"],
-  ["0","0","0","0","0","0","0","0","0","0"],
-  ["0","0","0","0","0","0","0","0","0","0"],
-  ["0","0","0","0","0","0","0","0","0","0"],
-  ["0","0","0","0","0","0","0","0","0","0"],
-  ["0","0","0","0","0","0","0","0","0","0"]
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0]
   ],
   startNamber:[                      //スタート時の盤面
-  ["0","0","0","0","0","0","0","0","0","0"],
-  ["0","0","0","0","0","0","0","0","0","0"],
-  ["0","0","0","0","0","0","0","0","0","0"],
-  ["0","0","0","0","0","0","0","0","0","0"],
-  ["0","0","0","0","0","0","0","0","0","0"],
-  ["0","0","0","0","0","0","0","0","0","0"],
-  ["0","0","0","0","0","0","0","0","0","0"],
-  ["0","0","0","0","0","0","0","0","0","0"],
-  ["0","0","0","0","0","0","0","0","0","0"],
-  ["0","0","0","0","0","0","0","0","0","0"]
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0]
   ],
   possible:{
     id:[]
   },
   streat:                       //一列の配列
-    ["0","0","0","0","0","0","0","0","0","0"
-  ],
+    [0,0,0,0,0,0,0,0,0,0],
 
   start:function(){       //画面をデーター化
     this.possible.id.length = 0;
     this.startNamber.length = 0;
     for(let id=11;id<100;id++){
       if(id%10==0) continue;
-      key = $("#"+id).text();
+      key = Number($("#"+id).text());
+      if(key == "") key = 0;
       r = chengeId.row(id);
       c = chengeId.colmun(id);
       this.bord [c][r] = key;
       if(key != 0) continue;
+        $(".colmun>ul>li>div").addClass("possible");
         this.possible.id.push(id);
     }
     this.startNamber.push(...this.bord);
   },
   input:function(id,key){       //画面をデーター化
-    this.bord [chengeId.colmun(id)][chengeId.row(id)] = key;
+    this.bord [chengeId.colmun(id)][chengeId.row(id)] = Number(key);
   },
 
   check:function(){             //重複確認
@@ -56,9 +57,9 @@ const display={
       $("#r"+i).removeClass();
       $("#c"+i).removeClass();
       $("#block"+i).removeClass();
-      if(cheak.row(i))    $("#r"+i).addClass("ok");
-      if(cheak.colmun(i)) $("#c"+i).addClass("ok");
-      if(cheak.block(i))  $("#block"+i).addClass("ok");
+      if(cheak.row(i,false))    $("#r"+i).addClass("ok");
+      if(cheak.colmun(i,false)) $("#c"+i).addClass("ok");
+      if(cheak.block(i,false))  $("#block"+i).addClass("ok");
 
     }
     if(cheak.gemeClear()){  $("main").addClass("end")}
@@ -74,16 +75,6 @@ const display={
       if(i!=(c-stC-1)*3+r-stR)
                    $("#"+(mvR+stR+(mvC+stC)*10)).addClass("selectLine");
     }
-  },
-  reset:function(){
-    for(let cell=0 ;cell<100;cell++){
-      r = chengeId.row(cell);
-      c = chengeId.colmun(cell)
-      display.startNamber[c][r] = "";
-      // display.bord[c][r] = "";
-    }
-    display.possible.id = new Array(0);
- 
   }
 }
 const cheak={
@@ -112,18 +103,22 @@ const cheak={
     return this.streat(zero);
   },
   rowOfStreat:function(r){    //row要素を一列の配列に
-    for(let i=1;i<10;i++){
+    display.streat.length = 0; 
+    for(let i=0;i<10;i++){
       display.streat[i] = display.bord[i][r];
     }
   },
   colmunOfStreat:function(c){    //colmun要素を一列の配列に
-    for(let i=1;i<10;i++){
+    display.streat.length = 0; 
+    for(let i=0;i<10;i++){
       display.streat[i] = display.bord[c][i];
     }
   },
   blockOfStreat:function(b){    //block要素を一列の配列に
     stR = ((b-1)%3)*3;            //ブロックの左端基準
     stC = Math.floor((b-1)/3)*3;  //ブロックの上端基準
+    display.streat.length = 0; 
+    display.streat[0] = 0;
     for(let i=1;i<10;i++){
       mvR = (i-1)%3+1;              //ブロック内移動右
       mvC = Math.floor((i+2)/3);    //ブロック内移動下
@@ -147,8 +142,7 @@ const cheak={
     ptn = 0;
     end = false;
     position = 0;
-    display.reset();
-    display.start();
+
     while(ptn<10){
       if(cheak.gemeClear())   position=display.possible.id.length-1;
       if(end)return;
@@ -192,7 +186,6 @@ const gaibu={
     for(let i=1;i<10;i++){
       for(let j=1;j<10;j++){
         const id =i*10+j; 
-        $("#"+id).text("");
         if(this.deta[i][j]!=0) $("#"+id).text(this.deta[i][j]);
       }
     }
@@ -212,90 +205,6 @@ const chengeId ={
   }
 }
 
-addEvent={
-  click:{
-    li:function(){
-      return function(){
-        const cell = $(this).attr("id");
-        const r = chengeId.row(cell);
-        const c = chengeId.colmun(cell);
-        const selectOn = $(this).hasClass("select");
-        $(".select").removeClass();
-        $(".selectLine").removeClass();
-        if(selectOn || display.startNamber [c][r] != 0)  return;
-        $(this).addClass("select");
-        display.line(r,c,chengeId.block(cell));     //横縦ブロックのライン変更
-      }
-    },
-    inputNumbar:function(){
-      return function(){
-        if(!isNaN($(this).text())) numbar = $(this).text();
-        else numbar ="";
-        $(".select").text(numbar);
-        cheak.pattern();
-        display.reset();
-      }
-    },
-    btncheak:function(){
-      return function(){
-        display.check();
-      }
-    },
-    btnstart:function(){
-      return function(){
-        gaibu.input();
-        display.start();
-      }
-    },
-    btnauto:function(){
-      return function(){
-        position = 0;
-        if(!cheak.gemeClear())  display.start();
-        else  position=display.possible.id.length-1;
-        auto(position);
-      }
-    },
-    btnptn:function(){
-      return function(){
-        cheak.pattern();
-      }
-    }
-  },
-  dragstart:function(){
-    return function(){
-      inputNumbar = this.textContent;
-    }
-  },
-  dragover:function(){
-    return function(event){
-      event.preventDefault();
-    }
-  },
-  drop:function(){
-    return function(event){
-      if(isNaN(inputNumbar)) inputNumbar ="";
-      cheak.pattern();
-      display.reset();
-      event.preventDefault();
-      this.textContent = inputNumbar;
-    }
-  },
-  keyup:function(){
-    return function(e){
-      let key = e.key;
-      console.log(key);
-      if(isNaN(key)) return;
-      const cell = $(".select").attr("id");
-      if(!($.isNumeric(key))||key<1) key = ""; 
-      $(".select").text(key);
-      display.input(cell,key);
-      $(".select").removeClass();
-      $(".selectLine").removeClass();
-      cheak.pattern();
-      display.reset();
-    }
-  }
-}
 async function auto(cellPozition){
   let i = cellPozition;
 
@@ -339,4 +248,106 @@ function autoNotDisplay(cellPozition){
     if(i<0)return false;
   }
   return true;
+}
+addEvent={
+  click:{
+    li:function(){
+      return function(){
+        const cell = $(this).attr("id");
+        const r = chengeId.row(cell);
+        const c = chengeId.colmun(cell);
+        const selectOn = $(this).hasClass("select");
+        $(".select").removeClass();
+        $(".selectLine").removeClass();
+        if(selectOn || display.startNamber [c][r] != 0)  return;
+        $(this).addClass("select");
+        display.line(r,c,chengeId.block(cell));     //横縦ブロックのライン変更
+      }
+    },
+    inputNumbar:function(){
+      return function(){
+        if(!isNaN($(this).text())) numbar = $(this).text();
+        else numbar ="";
+        $(".select").text(numbar);
+      }
+    },
+    btncheak:function(){
+      return function(){
+        display.check();
+      }
+    },
+    btnstart:function(){
+      return function(){
+        gaibu.input();
+        display.start();
+      }
+    },
+    btnauto:function(){
+      return function(){
+        position = 0;
+        if(!cheak.gemeClear())  display.start();
+        else  position=display.possible.id.length-1;
+        auto(position);
+      }
+    },
+    btnptn:function(){
+      return function(){
+
+      }
+    }
+  },
+  dragstart:function(){
+    return function(){
+      inputNumbar = this.textContent;
+    }
+  },
+  dragover:function(){
+    return function(event){
+      event.preventDefault();
+    }
+  },
+  drop:function(){
+    return function(event){
+      if(isNaN(inputNumbar)) inputNumbar ="";
+      console.log(`drop`);
+      event.preventDefault();
+      this.textContent = inputNumbar;
+    }
+  },
+  touchstart:function(){
+    return function(){
+      inputNumbar = this.textContent;
+      console.log(`touchstart${inputNumbar}`);
+
+    }
+  },
+  touchmove:function(){
+    return function(event){
+      event.preventDefault();
+      console.log(`touchmove`);
+    }
+  },
+  touchend:function(){
+    return function(event){
+      if(isNaN(inputNumbar)) inputNumbar ="";
+      console.log(`touchend`);
+      // cheak.pattern();
+      // display.reset();
+      event.preventDefault();
+      this.textContent = inputNumbar;
+    }
+  },
+  keyup:function(){
+    return function(e){
+      let key = e.key;
+      console.log(key);
+      if(isNaN(key)) return;
+      const cell = $(".select").attr("id");
+      if(!($.isNumeric(key))||key<1) key = ""; 
+      $(".select").text(key);
+      display.input(cell,key);
+      $(".select").removeClass();
+      $(".selectLine").removeClass();
+    }
+  }
 }

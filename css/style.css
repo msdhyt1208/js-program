@@ -55,6 +55,7 @@ main ul {
   padding: 1%;
 }
 main li {
+  position: relative;
   list-style: none;
   display: flex;
     justify-content: center;
@@ -66,6 +67,22 @@ main li {
   font-weight: bold;
   
 }
+.colmun>ul>li>div{
+  display: none;
+}
+.colmun>ul>li>.possible{
+  display: block;
+  position: absolute;
+  border: none;
+  border-top: solid rgb(210, 165, 100) 15px;
+  border-left: solid rgba(200, 100, 100,0) 15px;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 0;
+}
+
+
 .select{
   z-index: 10;
   scale: 1.2;
@@ -141,7 +158,11 @@ main >div >.ok {
     justify-content: space-between;
 
 }
+
 #numbar{
+  position: absolute;
+  bottom: -70%;
+  right: 10px;
   flex-direction: column;
   width: 60%;
   height: 160px;
