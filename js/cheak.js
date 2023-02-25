@@ -34,7 +34,6 @@ let display={
 
   start:function(){       //画面をデーター化
     this.possible.id.length = 0;
-    this.startNamber.length = 0;
     for(let id=11;id<100;id++){
       if(id%10==0) continue;
       key = Number($("#"+id).text());
@@ -42,11 +41,11 @@ let display={
       r = chengeId.row(id);
       c = chengeId.colmun(id);
       this.bord [c][r] = key;
+      this.startNamber [c][r] = key;
       if(key != 0) continue;
         $(".colmun>ul>li>div").addClass("possible");
         this.possible.id.push(id);
     }
-    this.startNamber.push(...this.bord);
   },
   input:function(id,key){       //画面をデーター化
     this.bord [chengeId.colmun(id)][chengeId.row(id)] = Number(key);

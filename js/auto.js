@@ -21,19 +21,13 @@ jsTouch=function(){
   inputNumbarBox = document.querySelectorAll("#numbar>div>div");
   purotLi = document.querySelectorAll("li");
   moveMain = document.querySelector("main");
-  input = false;
   moveMain.addEventListener("touchstart",function(event){
     input = false;
-    pageX = event.touches[0].pageX;
-    pageY = event.touches[0].pageY;
-    console.dir(document.elementFromPoint(pageX,pageY));
-    if(isNaN(numbar)) numbar = "";
-    hand = event.target;
+    hand = event.target.textContent;
+    if(isNaN(hand)) hand = 0;
     for(i=0;i<inputNumbarBox.length;i++){
-      if(document.elementFromPoint(pageX,pageY) == inputNumbarBox[i])  input = true; 
-    }
-    
-    
+      if(event.target == inputNumbarBox[i])  input = true; 
+    }    
   })
   moveMain.addEventListener("touchmove",function(event){
     pageX = event.touches[0].pageX;
@@ -42,17 +36,19 @@ jsTouch=function(){
   })
   moveMain.addEventListener("touchend",function(event){
     event.preventDefault();
-    if(!input) return;
+    if(!input||display.startNamber [c][r] != 0)  return;
     table  = document.elementFromPoint(pageX,pageY);
 
     id = table.id;
     r = chengeId.row(id);
     c = chengeId.colmun(id);
-    console.dir(id);
     
-    if(display.startNamber [c][r] != 0)  return;
+    
     for(i=0;i<purotLi.length;i++){
-      if(table === purotLi[i])  table.textContent = hand.textContent;
+      if(table === purotLi[i]){
+        display.bord[c][r] = Number(hand);
+        table.innerHTML = `${hand}${table.innerHTML}`;
+      }
     }
   })
 
