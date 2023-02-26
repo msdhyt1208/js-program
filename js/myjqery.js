@@ -8,6 +8,7 @@ $my = function(e){
       $(e).removeClass();
     },
     text(t){
+      if(t != undefined)
       $(e)[0].innerHTML = `${t}${$(e)[0].firstElementChild.outerHTML}`;
       return $(e).text();
     },

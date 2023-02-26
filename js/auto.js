@@ -1,4 +1,4 @@
-$("#numbar>div>div").on("click",addEvent.click.inputNumbar());
+$("#numbar>div>div").on("click",addEvent.click.numbar());
 $("#button-cheak")  .on("click",addEvent.click.btncheak());
 $("#button-start")  .on("click",addEvent.click.btnstart());
 $("#button-auto")   .on("click",addEvent.click.btnauto());

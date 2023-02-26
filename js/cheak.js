@@ -31,34 +31,39 @@ let display={
   },
   streat:                       //一列の配列
     [0,0,0,0,0,0,0,0,0,0],
-
+}
+const game={
   start:function(){       //画面をデーター化
-    this.possible.id.length = 0;
+    display.possible.id.length = 0;
     for(let id=11;id<100;id++){
       if(id%10==0) continue;
-      key = Number($my("#"+id).text());
+      key = Number($("#"+id).text());
       if(key == "") key = 0;
       r = chengeId.row(id);
       c = chengeId.colmun(id);
-      this.bord [c][r] = key;
-      this.startNamber [c][r] = key;
+      display.bord [c][r] = key;
+      display.startNamber [c][r] = key;
       if(key != 0) continue;
-        $my(".colmun>ul>li>div").addClass("possible");
-        this.possible.id.push(id);
+        $(".colmun>ul>li>div").addClass("possible");
+        display.possible.id.push(id);
     }
   },
-  input:function(id,key){       //画面をデーター化
-    this.bord [chengeId.colmun(id)][chengeId.row(id)] = Number(key);
+  inputBord:function(){       //画面をデーター化
+    for(i=0;i<$("main>div>ul>li").length;i++){
+      id = $("main>div>ul>li")[i].id;
+      display.bord [chengeId.colmun(id)][chengeId.row(id)] = $("main>div>ul>li")[i].textContent;
+    }
   },
 
   check:function(){             //重複確認
+    this.inputBord();
     for(let i=1;i<10;i++){
       $my("#r"+i).removeClass();
       $my("#c"+i).removeClass();
       $my("#block"+i).removeClass();
-      if(cheak.row(i,false))    $my("#r"+i).addClass("ok");
-      if(cheak.colmun(i,false)) $my("#c"+i).addClass("ok");
-      if(cheak.block(i,false))  $my("#block"+i).addClass("ok");
+      if(cheak.all("row",i,false))    $my("#r"+i).addClass("ok");
+      if(cheak.all("colmun",i,false)) $my("#c"+i).addClass("ok");
+      if(cheak.all("block",i,false))  $my("#block"+i).addClass("ok");
 
     }
     if(cheak.gemeClear()){  $my("main").addClass("end")}
@@ -74,11 +79,18 @@ let display={
       if(i!=(c-stC-1)*3+r-stR)
                    $my("#"+(mvR+stR+(mvC+stC)*10)).addClass("selectLine");
     }
+  },
+  inputNumbar(numbar){
+    $my("#numbar").addClass("inputOff");
+    $(".select").text(numbar) ;
+    $my(".select").removeClass();
+    $my(".selectLine").removeClass();
+    cheak.pattern();
   }
 }
 const cheak={
   oneCellAll:function(r,c,block,zero){             //重複確認
-    if(this.row(r,zero)&&this.colmun(c,zero)&&this.block(block,zero)){
+    if(this.all("row",r,zero)&&this.all("colmun",c,zero)&&this.all("block",block,zero)){
        return true;
     }
     else return false;
@@ -89,42 +101,35 @@ const cheak={
     }
     return true;
   },
-  row:function(r,zero){       //rowの確認
-    this.rowOfStreat(r);
+  all:function(select,th,zero){
+    display.streat.length = 0; 
+    switch(select){
+      case "row":
+        for(let i=0;i<10;i++){
+          display.streat[i] = display.bord[i][th];
+        }
+        break;
+      case "colmun":
+        for(let i=0;i<10;i++){
+          display.streat[i] = display.bord[th][i];
+        }
+        break;
+      case "block":
+        stR = ((th-1)%3)*3;            //ブロックの左端基準
+        stC = Math.floor((th-1)/3)*3;  //ブロックの上端基準
+        display.streat.length = 0; 
+        display.streat[0] = 0;
+        for(let i=1;i<10;i++){
+          mvR = (i-1)%3+1;              //ブロック内移動右
+          mvC = Math.floor((i+2)/3);    //ブロック内移動下
+          display.streat[i] = display.bord[stC+mvC][stR+mvR];
+        }
+        break;
+      default:
+        alert("error");
+    }
     return this.streat(zero);
   },
-  colmun:function(c,zero){       //colmunの確認
-    this.colmunOfStreat(c);
-    return this.streat(zero);
-  },
-  block:function(b,zero){       //blockの確認
-    this.blockOfStreat(b);
-    return this.streat(zero);
-  },
-  rowOfStreat:function(r){    //row要素を一列の配列に
-    display.streat.length = 0; 
-    for(let i=0;i<10;i++){
-      display.streat[i] = display.bord[i][r];
-    }
-  },
-  colmunOfStreat:function(c){    //colmun要素を一列の配列に
-    display.streat.length = 0; 
-    for(let i=0;i<10;i++){
-      display.streat[i] = display.bord[c][i];
-    }
-  },
-  blockOfStreat:function(b){    //block要素を一列の配列に
-    stR = ((b-1)%3)*3;            //ブロックの左端基準
-    stC = Math.floor((b-1)/3)*3;  //ブロックの上端基準
-    display.streat.length = 0; 
-    display.streat[0] = 0;
-    for(let i=1;i<10;i++){
-      mvR = (i-1)%3+1;              //ブロック内移動右
-      mvC = Math.floor((i+2)/3);    //ブロック内移動下
-      display.streat[i] = display.bord[stC+mvC][stR+mvR];
-    }
-  },
-
   streat:function(zero){    
     for(let i=1;i<10;i++){
       for(let j=i+1;j<10;j++){
@@ -141,18 +146,18 @@ const cheak={
     ptn = 0;
     end = false;
     position = 0;
-
+    game.inputBord()
     while(ptn<10){
       if(cheak.gemeClear())   position=display.possible.id.length-1;
       if(end)return;
       if(!autoNotDisplay(position)) {
         end = true;
-        setTimeout(function(){$my("#button-ptn").text(ptn)},1000)
+        setTimeout(function(){$("#button-ptn").text(ptn)},1000)
         return;
       }
-      $my("#button-ptn").text("思考中");
+      $("#button-ptn").text("思考中");
       ptn ++;
-      setTimeout(function(){$my("#button-ptn").text(ptn)},1000)
+      setTimeout(function(){$("#button-ptn").text(ptn)},1000)
     }
   }
 
@@ -185,7 +190,7 @@ const gaibu={
     for(let i=1;i<10;i++){
       for(let j=1;j<10;j++){
         const id =i*10+j; 
-        if(this.deta[i][j]!=0) $my("#"+id).text(this.deta[i][j]);
+        if(this.deta[i][j]!=0) $("#"+id).text(this.deta[i][j]);
       }
     }
   }
@@ -249,45 +254,49 @@ function autoNotDisplay(cellPozition){
   return true;
 }
 addEvent={
+  keyup: function(){
+    return function(e){
+      let key = e.key;
+      if(!($.isNumeric(key))||key<1) key = ""; 
+      game.inputNumbar(key);
+    };
+  },
   click:{
     li:function(){
       return function(){
-        const cell = $my(this).attr("id");
+        const cell = $(this).attr("id");
         const r = chengeId.row(cell);
         const c = chengeId.colmun(cell);
-        const selectOn = $my(this).hasClass("select");
         $my("#numbar").addClass("inputOn");
         $my(".select").removeClass();
         $my(".selectLine").removeClass();
-        if(selectOn || display.startNamber [c][r] != 0)  return;
+        if($(this).hasClass("select") || display.startNamber [c][r] != 0)  return;
         $my(this).addClass("select");
-        display.line(r,c,chengeId.block(cell));     //横縦ブロックのライン変更
+        game.line(r,c,chengeId.block(cell));     //横縦ブロックのライン変更
       }
     },
-    inputNumbar:function(){
+    numbar:function(){
       return function(){
-        if(!isNaN($my(this).text())) numbar = $my(this).text();
+        if(!isNaN($(this).text())) numbar = $(this).text();
         else numbar ="";
-        $my("#numbar").addClass("inputOff");
-        console.dir($my(".select")[0].firstElementChild);
-        $my(".select").text(numbar) 
+        game.inputNumbar(numbar);
       }
     },
     btncheak:function(){
       return function(){
-        display.check();
+        game.check();
       }
     },
     btnstart:function(){
       return function(){
         gaibu.input();
-        display.start();
+        game.start();
       }
     },
     btnauto:function(){
       return function(){
         position = 0;
-        if(!cheak.gemeClear())  display.start();
+        if(!cheak.gemeClear())  game.start();
         else  position=display.possible.id.length-1;
         auto(position);
       }
@@ -297,57 +306,45 @@ addEvent={
 
       }
     }
-  },
-  dragstart:function(){
-    return function(){
-      inputNumbar = this.textContent;
-    }
-  },
-  dragover:function(){
-    return function(event){
-      event.preventDefault();
-    }
-  },
-  drop:function(){
-    return function(event){
-      if(isNaN(inputNumbar)) inputNumbar ="";
-      console.log(`drop`);
-      event.preventDefault();
-      this.textContent = inputNumbar;
-    }
-  },
-  touchstart:function(){
-    return function(){
-      inputNumbar = this.textContent;
-      console.log(`touchstart${inputNumbar}`);
-
-    }
-  },
-  touchmove:function(){
-    return function(event){
-      event.preventDefault();
-      console.log(`touchmove`);
-    }
-  },
-  touchend:function(){
-    return function(event){
-      if(isNaN(inputNumbar)) inputNumbar ="";
-      console.log(`touchend`);
-      event.preventDefault();
-      this.textContent = inputNumbar;
-    }
-  },
-  keyup:function(){
-    return function(e){
-      let key = e.key;
-      console.log(key);
-      if(isNaN(key)) return;
-      const cell = $my(".select").attr("id");
-      if(!($.isNumeric(key))||key<1) key = ""; 
-      $my(".select").text(key);
-      display.input(cell,key);
-      $my(".select").removeClass();
-      $my(".selectLine").removeClass();
-    }
   }
+  // dragstart:function(){
+  //   return function(){
+  //     inputNumbar = this.textContent;
+  //   }
+  // },
+  // dragover:function(){
+  //   return function(event){
+  //     event.preventDefault();
+  //   }
+  // },
+  // drop:function(){
+  //   return function(event){
+  //     if(isNaN(inputNumbar)) inputNumbar ="";
+  //     console.log(`drop`);
+  //     event.preventDefault();
+  //     this.textContent = inputNumbar;
+  //   }
+  // },
+  // touchstart:function(){
+  //   return function(){
+  //     inputNumbar = this.textContent;
+  //     console.log(`touchstart${inputNumbar}`);
+
+  //   }
+  // },
+  // touchmove:function(){
+  //   return function(event){
+  //     event.preventDefault();
+  //     console.log(`touchmove`);
+  //   }
+  // },
+  // touchend:function(){
+  //   return function(event){
+  //     if(isNaN(inputNumbar)) inputNumbar ="";
+  //     console.log(`touchend`);
+  //     event.preventDefault();
+  //     this.textContent = inputNumbar;
+  //   }
+  // }
+
 }
