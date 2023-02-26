@@ -5,5 +5,7 @@ function resolveAfterSeconds(sec) {
     }, sec*1000);
   });
 }
-
+function copy(array){
+  return JSON.parse(JSON.stringify(array));
+}
 
