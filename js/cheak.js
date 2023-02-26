@@ -256,12 +256,11 @@ addEvent={
         const r = chengeId.row(cell);
         const c = chengeId.colmun(cell);
         const selectOn = $(this).hasClass("select");
-        $("#numbar").removeClass();
-        $("#numbar").addClass("inputOn");
-        $(".select").removeClass();
-        $(".selectLine").removeClass();
+        $my("#numbar").addClass("inputOn");
+        $my(".select").removeClass();
+        $my(".selectLine").removeClass();
         if(selectOn || display.startNamber [c][r] != 0)  return;
-        $(this).addClass("select");
+        $my(this).addClass("select");
         display.line(r,c,chengeId.block(cell));     //横縦ブロックのライン変更
       }
     },
