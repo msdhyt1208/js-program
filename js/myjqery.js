@@ -6,6 +6,17 @@ $my = function(e){
     },
     removeClass(){
       $(e).removeClass();
+    },
+    text(t){
+      $(e)[0].innerHTML = `${t}${$(e)[0].firstElementChild.outerHTML}`;
+      return $(e).text();
+    },
+    attr(t){
+      $(e).attr(t);
+      return $(e).attr(t);
     }
   }
 }
+
+        
+// $(".select")[0].innerHTML = `${t}${$(".select")[0].firstElementChild.outerHTML}`;

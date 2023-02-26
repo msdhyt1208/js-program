@@ -36,14 +36,14 @@ let display={
     this.possible.id.length = 0;
     for(let id=11;id<100;id++){
       if(id%10==0) continue;
-      key = Number($("#"+id).text());
+      key = Number($my("#"+id).text());
       if(key == "") key = 0;
       r = chengeId.row(id);
       c = chengeId.colmun(id);
       this.bord [c][r] = key;
       this.startNamber [c][r] = key;
       if(key != 0) continue;
-        $(".colmun>ul>li>div").addClass("possible");
+        $my(".colmun>ul>li>div").addClass("possible");
         this.possible.id.push(id);
     }
   },
@@ -53,15 +53,15 @@ let display={
 
   check:function(){             //重複確認
     for(let i=1;i<10;i++){
-      $("#r"+i).removeClass();
-      $("#c"+i).removeClass();
-      $("#block"+i).removeClass();
-      if(cheak.row(i,false))    $("#r"+i).addClass("ok");
-      if(cheak.colmun(i,false)) $("#c"+i).addClass("ok");
-      if(cheak.block(i,false))  $("#block"+i).addClass("ok");
+      $my("#r"+i).removeClass();
+      $my("#c"+i).removeClass();
+      $my("#block"+i).removeClass();
+      if(cheak.row(i,false))    $my("#r"+i).addClass("ok");
+      if(cheak.colmun(i,false)) $my("#c"+i).addClass("ok");
+      if(cheak.block(i,false))  $my("#block"+i).addClass("ok");
 
     }
-    if(cheak.gemeClear()){  $("main").addClass("end")}
+    if(cheak.gemeClear()){  $my("main").addClass("end")}
   },
   line:function(r,c,b){             //重複確認
     stR = ((b-1)%3)*3;            //ブロックの左端基準
@@ -69,10 +69,10 @@ let display={
     for(let i=1;i<10;i++){
       mvR = (i-1)%3+1;              //ブロック内移動右
       mvC = Math.floor((i+2)/3);    //ブロック内移動下
-      if(i != c)   $("#"+((i*10)+r)).addClass("selectLine");
-      if(i != r)   $("#"+((c*10)+i)).addClass("selectLine");
+      if(i != c)   $my("#"+((i*10)+r)).addClass("selectLine");
+      if(i != r)   $my("#"+((c*10)+i)).addClass("selectLine");
       if(i!=(c-stC-1)*3+r-stR)
-                   $("#"+(mvR+stR+(mvC+stC)*10)).addClass("selectLine");
+                   $my("#"+(mvR+stR+(mvC+stC)*10)).addClass("selectLine");
     }
   }
 }
@@ -147,12 +147,12 @@ const cheak={
       if(end)return;
       if(!autoNotDisplay(position)) {
         end = true;
-        setTimeout(function(){$("#button-ptn").text(ptn)},1000)
+        setTimeout(function(){$my("#button-ptn").text(ptn)},1000)
         return;
       }
-      $("#button-ptn").text("思考中");
+      $my("#button-ptn").text("思考中");
       ptn ++;
-      setTimeout(function(){$("#button-ptn").text(ptn)},1000)
+      setTimeout(function(){$my("#button-ptn").text(ptn)},1000)
     }
   }
 
@@ -185,7 +185,7 @@ const gaibu={
     for(let i=1;i<10;i++){
       for(let j=1;j<10;j++){
         const id =i*10+j; 
-        if(this.deta[i][j]!=0) $("#"+id).text(this.deta[i][j]);
+        if(this.deta[i][j]!=0) $my("#"+id).text(this.deta[i][j]);
       }
     }
   }
@@ -220,7 +220,7 @@ async function auto(cellPozition){
     (display.bord[c][r] >= 10) ? i--:i++;
     if(display.bord[c][r] >= 10)  display.bord[c][r] = "";
     
-    $("#"+cell).text(display.bord[c][r]);
+    $my("#"+cell).text(display.bord[c][r]);
     if(i<0)return false;
     const result = await resolveAfterSeconds(0.01);
   }
@@ -252,10 +252,10 @@ addEvent={
   click:{
     li:function(){
       return function(){
-        const cell = $(this).attr("id");
+        const cell = $my(this).attr("id");
         const r = chengeId.row(cell);
         const c = chengeId.colmun(cell);
-        const selectOn = $(this).hasClass("select");
+        const selectOn = $my(this).hasClass("select");
         $my("#numbar").addClass("inputOn");
         $my(".select").removeClass();
         $my(".selectLine").removeClass();
@@ -266,12 +266,11 @@ addEvent={
     },
     inputNumbar:function(){
       return function(){
-        if(!isNaN($(this).text())) numbar = $(this).text();
+        if(!isNaN($my(this).text())) numbar = $my(this).text();
         else numbar ="";
-        $("#numbar").removeClass();
-        $("#numbar").addClass("inputOff");
-        console.dir($(".select")[0].firstElementChild);
-        $(".select")[0].innerHTML = `${numbar}${$(".select")[0].firstElementChild.outerHTML}`;
+        $my("#numbar").addClass("inputOff");
+        console.dir($my(".select")[0].firstElementChild);
+        $my(".select").text(numbar) 
       }
     },
     btncheak:function(){
@@ -334,8 +333,6 @@ addEvent={
     return function(event){
       if(isNaN(inputNumbar)) inputNumbar ="";
       console.log(`touchend`);
-      // cheak.pattern();
-      // display.reset();
       event.preventDefault();
       this.textContent = inputNumbar;
     }
@@ -345,12 +342,12 @@ addEvent={
       let key = e.key;
       console.log(key);
       if(isNaN(key)) return;
-      const cell = $(".select").attr("id");
+      const cell = $my(".select").attr("id");
       if(!($.isNumeric(key))||key<1) key = ""; 
-      $(".select").text(key);
+      $my(".select").text(key);
       display.input(cell,key);
-      $(".select").removeClass();
-      $(".selectLine").removeClass();
+      $my(".select").removeClass();
+      $my(".selectLine").removeClass();
     }
   }
 }
