@@ -256,6 +256,8 @@ addEvent={
         const r = chengeId.row(cell);
         const c = chengeId.colmun(cell);
         const selectOn = $(this).hasClass("select");
+        $("#numbar").removeClass();
+        $("#numbar").addClass("inputOn");
         $(".select").removeClass();
         $(".selectLine").removeClass();
         if(selectOn || display.startNamber [c][r] != 0)  return;
@@ -267,7 +269,10 @@ addEvent={
       return function(){
         if(!isNaN($(this).text())) numbar = $(this).text();
         else numbar ="";
-        $(".select").text(numbar);
+        $("#numbar").removeClass();
+        $("#numbar").addClass("inputOff");
+        console.dir($(".select")[0].firstElementChild);
+        $(".select")[0].innerHTML = `${numbar}${$(".select")[0].firstElementChild.outerHTML}`;
       }
     },
     btncheak:function(){
