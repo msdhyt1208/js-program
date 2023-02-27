@@ -1,57 +1,46 @@
 
 ptn = 0;
 end =false;
+
 let display={
-  bord:[                      //変更中の盤面
-  [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0]
-  ],
-  startNamber:[                      //スタート時の盤面
-  [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0]
+  bord:[  //変更中の盤面
+
   ],
   possible:{
     id:[]
-  },
-  streat:                       //一列の配列
-    [0,0,0,0,0,0,0,0,0,0],
+  }
 }
 const game={
   start:function(){       //画面をデーター化
+    console.dir(display.bord);
     display.possible.id.length = 0;
-    for(let id=11;id<100;id++){
-      if(id%10==0) continue;
-      key = Number($("#"+id).text());
+    display.bord.length = 0;
+    bord=[]
+    bord[0] =[0,0,0,0,0,0,0,0,0,0];
+    li = $("main>div>ul>li");
+    for(i=0;i<$("main>div>ul>li").length;i++){
+      key = Number($("main>div>ul>li")[i].textContent);
+      id =  $("main>div>ul>li")[i].id;
       if(key == "") key = 0;
       r = chengeId.row(id);
       c = chengeId.colmun(id);
-      display.bord [c][r] = key;
-      display.startNamber [c][r] = key;
+      if(r ==1){
+        bord[c] = new Array(10);
+        bord[c][0] = 0;
+      }
+      bord [c][r] = key;
       if(key != 0) continue;
         $(".colmun>ul>li>div").addClass("possible");
         display.possible.id.push(id);
     }
+    display.bord.push(copy(bord));
+    display.bord.push(copy(bord));
+    console.dir(display.bord);
   },
   inputBord:function(){       //画面をデーター化
     for(i=0;i<$("main>div>ul>li").length;i++){
       id = $("main>div>ul>li")[i].id;
-      display.bord [chengeId.colmun(id)][chengeId.row(id)] = $("main>div>ul>li")[i].textContent;
+      display.bord [1][chengeId.colmun(id)][chengeId.row(id)] = $("main>div>ul>li")[i].textContent;
     }
   },
 
@@ -85,7 +74,7 @@ const game={
     $(".select").text(numbar) ;
     $my(".select").removeClass();
     $my(".selectLine").removeClass();
-    cheak.pattern();
+    // cheak.pattern();
   }
 }
 const cheak={
@@ -102,42 +91,43 @@ const cheak={
     return true;
   },
   all:function(select,th,zero){
-    display.streat.length = 0; 
+    streat=[0,0,0,0,0,0,0,0,0,0];
+    
     switch(select){
       case "row":
         for(let i=0;i<10;i++){
-          display.streat[i] = display.bord[i][th];
+          streat[i] = display.bord[1][i][th];
         }
         break;
       case "colmun":
         for(let i=0;i<10;i++){
-          display.streat[i] = display.bord[th][i];
+          streat[i] = display.bord[1][th][i];
         }
         break;
       case "block":
         stR = ((th-1)%3)*3;            //ブロックの左端基準
         stC = Math.floor((th-1)/3)*3;  //ブロックの上端基準
-        display.streat.length = 0; 
-        display.streat[0] = 0;
+        streat.length = 0; 
+        streat[0] = 0;
         for(let i=1;i<10;i++){
           mvR = (i-1)%3+1;              //ブロック内移動右
           mvC = Math.floor((i+2)/3);    //ブロック内移動下
-          display.streat[i] = display.bord[stC+mvC][stR+mvR];
+          streat[i] = display.bord[1][stC+mvC][stR+mvR];
         }
         break;
       default:
         alert("error");
     }
-    return this.streat(zero);
+    return this.streat(streat,zero);
   },
-  streat:function(zero){    
+  streat:function(streat,zero){    
     for(let i=1;i<10;i++){
       for(let j=i+1;j<10;j++){
-        if(display.streat[i] == 0){
+        if(streat[i] == 0){
           if(zero) break;
           else return false;
         } 
-        if(display.streat[i] == display.streat[j]) return false;
+        if(streat[i] == streat[j]) return false;
       }
     }
     return true;
@@ -218,14 +208,14 @@ async function auto(cellPozition){
     c    = chengeId.colmun(cell);
     b    = chengeId.block(cell);
 
-    while(display.bord[c][r] < 10){
-      display.bord[c][r] ++;
+    while(display.bord[1][c][r] < 10){
+      display.bord[1][c][r] ++;
       if(cheak.oneCellAll(r,c,b,true)) break;
     }
-    (display.bord[c][r] >= 10) ? i--:i++;
-    if(display.bord[c][r] >= 10)  display.bord[c][r] = "";
+    (display.bord[1][c][r] >= 10) ? i--:i++;
+    if(display.bord[1][c][r] >= 10)  display.bord[1][c][r] = "";
     
-    $my("#"+cell).text(display.bord[c][r]);
+    $my("#"+cell).text(display.bord[1][c][r]);
     if(i<0)return false;
     const result = await resolveAfterSeconds(0.01);
   }
@@ -270,7 +260,7 @@ addEvent={
         $my("#numbar").addClass("inputOn");
         $my(".select").removeClass();
         $my(".selectLine").removeClass();
-        if($(this).hasClass("select") || display.startNamber [c][r] != 0)  return;
+        if($(this).hasClass("select") || display.bord[0][c][r] != 0)  return;
         $my(this).addClass("select");
         game.line(r,c,chengeId.block(cell));     //横縦ブロックのライン変更
       }
@@ -295,6 +285,7 @@ addEvent={
     },
     btnauto:function(){
       return function(){
+        game.start();
         position = 0;
         if(!cheak.gemeClear())  game.start();
         else  position=display.possible.id.length-1;
